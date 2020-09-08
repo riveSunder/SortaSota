@@ -1,16 +1,17 @@
 using PyCall
 using Plots
-using Images
+#using Images
 using MLDatasets
 using Zygote
 using FFTW
 using PaddedViews
 using Statistics
+using TickTock
 
 @pyimport sklearn.datasets as datasets
 @pyimport matplotlib.pyplot as plt
 
-function asm_prop(wavefront, fxx, fyy, my_length=32.0e-3, wavelength=550.0e-9, distance=10.0e-3)
+function asm_prop(wavefront, fxx, fyy, my_length=32.0e-3, wavelength=550.0e-9, distance=100.0e-3)
     
     dim_x, dim_y = size(wavefront)[2:3]
     
@@ -69,7 +70,8 @@ end
 
 log_loss = function(y_tgt, pred)
    
-    return -(1 / size(y_tgt)[1]) .* sum(y_tgt .* log.(pred) .+ (1.0 .- y_tgt) .* log.(1.0 .- pred))
+    return -(1 / size(y_tgt)[1]) .* sum(y_tgt .* log.(pred) .+ 
+	(1.0 .- y_tgt) .* log.(1.0 .- pred))
 
 end
 
@@ -193,10 +195,17 @@ function get_onn_loss(in_x, phase_slices, tgt_y, decision_zones, fxx, fyy, n2=1e
     pred_sm = softmax(pred)
     
     loss = log_loss(tgt_y, pred_sm)
+    loss = mse_loss(angle.(in_x), intensity2)
     #accuracy = get_accuracy(tgt_y, pred_sm)
     #println(accuracy)
     return loss    
       
+end
+
+function mse_loss(tgt_img, pred_img)
+    
+   return mean( abs.((tgt_img - pred_img).^2))
+
 end
 
 function get_intensity(in_x, phase_slices, fxx, fyy, n2 = 1e-20)
@@ -210,29 +219,38 @@ end
 
 
 
-x, y = datasets.load_digits(return_X_y=true)
+#
+#x, y = MNIST.traindata()
+#
+#x = permutedims(x, [3,1,2])
 
-x = permutedims(x, [3,2,1]);
-
-val_x = reshape(x[1:256,:],256, 8, 8);
-val_y = get_one_hot(y[1:256]);
-
-train_x = reshape(x[257:1280, :], 1024, 8, 8);
-train_y = get_one_hot(y[256:1280]);
-
-test_x = reshape(x[1281:1797, :], 517, 8, 8);
-test_y = get_one_hot(y[1280:1797]);
-
-train_x = PaddedView(0.0, train_x, (1024, 64,64), (1, 31, 31));
-test_x = PaddedView(0.0, test_x, (517, 64,64), (1, 31, 31));
-val_x = PaddedView(0.0, test_x, (256, 64,64), (1, 31, 31));
+if true
+    x, y = datasets.load_digits(return_X_y=true)
+    
+    x = x / 255.0
+    
+    val_x = reshape(x[1:256,:],256, 8, 8);
+    val_y = get_one_hot(y[1:256]);
+    
+    train_x = reshape(x[257:1280, :], 1024, 8, 8);
+    train_y = get_one_hot(y[256:1280]);
+    
+    test_x = reshape(x[1281:1797, :], 517, 8, 8);
+    test_y = get_one_hot(y[1280:1797]);
+    
+    train_x = permutedims(train_x, [1,3,2]);
+    val_x = permutedims(val_x, [1,3,2]);
+    test_x = permutedims(test_x, [1,3,2]);
+    
+    train_x = PaddedView(0.0, train_x, (1024, 64,64), (1, 31, 31));
+    test_x = PaddedView(0.0, test_x, (517, 64,64), (1, 31, 31));
+    val_x = PaddedView(0.0, val_x, (256, 64,64), (1, 31, 31));
+end
 
 batch_size, dim_x, dim_y = 32, 64, 64;
 
-
-
-num_slices = 2
-phase_slices = [1.0 .* exp.((im * 2π) .* zeros(1,dim_x, dim_y)/100)
+num_slices = 8
+phase_slices = [1.0 .* exp.((im * 2π) .* zeros(1,dim_x, dim_y)/1e3)
     for ii in 1:num_slices]
 
 
@@ -248,43 +266,73 @@ fxx, fyy = meshgrid(xx,xx)
 
 train_x = ones(1, dim_x, dim_y) .* 
                 exp.(im*2π .* train_x) .*
-                reshape((1.0 .* sqrt.(fxx.^2 + fyy.^2) .<= 300),1,dim_x,dim_y)
+                reshape((1.0 .* sqrt.(fxx.^2 + fyy.^2) .<= 900),1,dim_x,dim_y)
 
 val_x = ones(1, dim_x, dim_y) .* 
                 exp.(im*2π .* val_x) .*
-                reshape((1.0 .* sqrt.(fxx.^2 + fyy.^2) .<= 300),1,dim_x,dim_y)
+                reshape((1.0 .* sqrt.(fxx.^2 + fyy.^2) .<= 900),1,dim_x,dim_y)
 
 test_x = ones(1, dim_x, dim_y) .* 
                 exp.(im*2π .* test_x) .*
-                reshape((1.0 .* sqrt.(fxx.^2 + fyy.^2) .<= 300),1,dim_x,dim_y)
-lr = 1e-3
-n2 = 1e-2
+                reshape((1.0 .* sqrt.(fxx.^2 + fyy.^2) .<= 900),1,dim_x,dim_y)
+
+lr = 1e-6
+n2 = 1e-20
 
 println(maximum(fxx))
 
-plt.figure()
-plt.subplot(121)
-plt.imshow(angle.(train_x[1,:,:]))
-plt.subplot(122)
-plt.imshow(abs2.(train_x[1,:,:]))
-plt.show()
+#for cc in 1:6
+#    plt.figure()
+#    plt.subplot(121)
+#    plt.imshow(angle.(train_x[cc*4,:,:]))
+#    plt.subplot(122)
+#    plt.imshow(abs2.(train_x[cc*4,:,:]))
+#end
+#plt.show()
+#for cc in 1:6
+#    plt.figure()
+#    plt.subplot(121)
+#    plt.imshow(angle.(val_x[cc*4,:,:]))
+#    plt.subplot(122)
+#    plt.imshow(abs2.(val_x[cc*4,:,:]))
+#end
+#plt.show()
+#for cc in 1:6
+#    plt.figure()
+#    plt.subplot(121)
+#    plt.imshow(angle.(test_x[cc*4,:,:]))
+#    plt.subplot(122)
+#    plt.imshow(abs2.(test_x[cc*4,:,:]))
+#end
+#plt.show()
 
-for step in 1:100
+tick()
+for step in 1:4000
 
-    if (step-1) % 1 == 0
+    if (step-2) % 500 == 0
 
         loss =  get_onn_loss(val_x, phase_slices, val_y, decision_zones, fxx, fyy);
         intensity = get_intensity(val_x, phase_slices, fxx, fyy, n2)
         intensity2 = intensity ./ maximum(intensity, dims=[2,3])
-        pred = get_pred(intensity2, decision_zones)
-        pred_sm = softmax(pred)
-        accuracy = get_accuracy(val_y, pred_sm)
+        #pred = get_pred(intensity2, decision_zones)
+        #pred_sm = softmax(pred)
+        #accuracy = get_accuracy(val_y, pred_sm)
+        for cc in [10]
+            plt.figure()
+            plt.subplot(121)
+            plt.imshow(angle.(val_x[cc*4,:,:]))
+            plt.subplot(122)
+            plt.imshow(intensity2[cc*4,:,:])
+        end
+        plt.savefig("temp_progress$step.png")
 
-        println("step $step, loss = $loss, accuracy = $accuracy"); #, size(d_slices))
+        println("step $step, loss = $loss") #, accuracy = $accuracy); #, size(d_slices))
+
+	laptimer()
 
     end
 
-    for batch_end_idx in batch_size+1:size(train_x)[1]
+    for batch_end_idx in batch_size+1:batch_size:size(train_x)[1]
         in_x = train_x[batch_end_idx-batch_size:batch_end_idx,:,:]
         tgt_y = train_y[batch_end_idx-batch_size:batch_end_idx,:]
 
@@ -299,4 +347,14 @@ for step in 1:100
 
 end
 
+intensity = get_intensity(val_x, phase_slices, fxx, fyy, n2)
+intensity2 = intensity ./ maximum(intensity, dims=[2,3])
 
+for cc in 1:6
+    plt.figure()
+    plt.subplot(121)
+    plt.imshow(angle.(val_x[cc*4,:,:]))
+    plt.subplot(122)
+    plt.imshow(intensity2[cc*4,:,:])
+end
+plt.show()
