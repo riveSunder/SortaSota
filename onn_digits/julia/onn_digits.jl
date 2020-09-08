@@ -117,7 +117,7 @@ function optical_network(in_x, phase_slices, fxx, fyy, n2=1e-20)
    
     #hard-coded padding, TODO: generalize for variable dimensions
     #wavefront = PaddedView(0.0 + 0.0 * im, data_array, (dim_n, 56,56), (1, 15,15))
-    wavefront = ones(dim_n, dim_x, dim_y) .* exp.(im*2π .* in_x) 
+    wavefront = in_x # ones(dim_n, dim_x, dim_y) .* exp.(im*2π .* in_x) 
     
     wavefront2 = multiply_and_propagate(wavefront, phase_slices, fxx, fyy, n2)
     
@@ -210,41 +210,30 @@ end
 
 
 
+x, y = datasets.load_digits(return_X_y=true)
+
+x = permutedims(x, [3,2,1]);
+
+val_x = reshape(x[1:256,:],256, 8, 8);
+val_y = get_one_hot(y[1:256]);
+
+train_x = reshape(x[257:1280, :], 1024, 8, 8);
+train_y = get_one_hot(y[256:1280]);
+
+test_x = reshape(x[1281:1797, :], 517, 8, 8);
+test_y = get_one_hot(y[1280:1797]);
+
+train_x = PaddedView(0.0, train_x, (1024, 64,64), (1, 31, 31));
+test_x = PaddedView(0.0, test_x, (517, 64,64), (1, 31, 31));
+val_x = PaddedView(0.0, test_x, (256, 64,64), (1, 31, 31));
+
+batch_size, dim_x, dim_y = 32, 64, 64;
 
 
-train_x, train_y = MNIST.traindata();
 
-test_x, test_y = MNIST.testdata();
-
-
-
-train_x = permutedims(train_x, [3,2,1]);
-
-test_x = permutedims(test_x, [3,2,1]);
-
-val_x = train_x[58000:size(train_x)[1],:,:]
-val_y = train_y[58000:size(train_x)[1],:]
-
-train_x = train_x[1:58000,:,:]
-train_y = train_y[1:58000,:,:]
-
-
-batch_size, dim_x, dim_y = 32, 28, 28 #56, 56;
-num_slices = 1;
-
-y_one_hot = get_one_hot(train_y);
-val_y_one_hot = get_one_hot(val_y);
-
-num_slices = 32
+num_slices = 2
 phase_slices = [1.0 .* exp.((im * 2π) .* zeros(1,dim_x, dim_y)/100)
     for ii in 1:num_slices]
-
-
-
-wavefront = 1e6 * exp.(im * 2π * randn(32,56,56))
-
-#test1 = multiply_and_propagate(wavefront, phase_slices);
-#test2 = optical_network(in_x, phase_slices);
 
 
 decision_zones = get_decision_zones(batch_size, dim_x, dim_y, 10)
@@ -257,22 +246,39 @@ xx = range(-1/(2*px), stop=1/(2*px) - 1/(dim_x*px), length=dim_x)
 
 fxx, fyy = meshgrid(xx,xx)
 
+train_x = ones(1, dim_x, dim_y) .* 
+                exp.(im*2π .* train_x) .*
+                reshape((1.0 .* sqrt.(fxx.^2 + fyy.^2) .<= 300),1,dim_x,dim_y)
+
+val_x = ones(1, dim_x, dim_y) .* 
+                exp.(im*2π .* val_x) .*
+                reshape((1.0 .* sqrt.(fxx.^2 + fyy.^2) .<= 300),1,dim_x,dim_y)
+
+test_x = ones(1, dim_x, dim_y) .* 
+                exp.(im*2π .* test_x) .*
+                reshape((1.0 .* sqrt.(fxx.^2 + fyy.^2) .<= 300),1,dim_x,dim_y)
 lr = 1e-3
 n2 = 1e-2
 
+println(maximum(fxx))
+
+plt.figure()
+plt.subplot(121)
+plt.imshow(angle.(train_x[1,:,:]))
+plt.subplot(122)
+plt.imshow(abs2.(train_x[1,:,:]))
+plt.show()
+
 for step in 1:100
 
-    if (step-1) % 10 == 0
+    if (step-1) % 1 == 0
 
-        in_vx = val_x[1:256,:,:]
-        tgt_vy = val_y_one_hot[1:256,:]
-
-        loss =  get_onn_loss(in_vx, phase_slices, tgt_vy, decision_zones, fxx, fyy);
-        intensity = get_intensity(in_vx, phase_slices, fxx, fyy, n2)
+        loss =  get_onn_loss(val_x, phase_slices, val_y, decision_zones, fxx, fyy);
+        intensity = get_intensity(val_x, phase_slices, fxx, fyy, n2)
         intensity2 = intensity ./ maximum(intensity, dims=[2,3])
         pred = get_pred(intensity2, decision_zones)
         pred_sm = softmax(pred)
-        accuracy = get_accuracy(tgt_vy, pred_sm)
+        accuracy = get_accuracy(val_y, pred_sm)
 
         println("step $step, loss = $loss, accuracy = $accuracy"); #, size(d_slices))
 
@@ -280,7 +286,7 @@ for step in 1:100
 
     for batch_end_idx in batch_size+1:size(train_x)[1]
         in_x = train_x[batch_end_idx-batch_size:batch_end_idx,:,:]
-        tgt_y = y_one_hot[batch_end_idx-batch_size:batch_end_idx,:]
+        tgt_y = train_y[batch_end_idx-batch_size:batch_end_idx,:]
 
         d_slices = gradient((phase_slices) ->
             get_onn_loss(in_x, phase_slices, tgt_y, decision_zones, fxx, fyy),
@@ -290,9 +296,6 @@ for step in 1:100
             phase_slices[slice_idx] .*= - exp.(im .* angle.(lr .* d_slices[1][slice_idx]));
         end
     end
-
-
-
 
 end
 
