@@ -11,7 +11,7 @@ If you're a cellular automata (CA) enthusiast, you probably already know that yo
 One thing that I found a bit lacking in my [implementations](https://github.com/rivesunder/dca) of differentiable (neural) cellular automata is that, with zero-padding, cells behave abnormally at the edges of their universes. Imagine if you reached the edge of our universe while out exploring one day and suddenly the laws of physics changed, and not in a cool way, but in a really lame way that makes everything seem slightly boring. That's what it's like to truncate CA universes at the edge of their grid universe, like some sort of common 2D image. Lame! But there is a better way.
 
 <div align="center">
-<img src="circular_padding/assets/glider_fail.gif">
+<img src="/circular_padding/assets/glider_fail.gif">
 <br>
 <em>Boring!</em>
 </div>
@@ -22,7 +22,7 @@ I was looking at the documentation for `torch.nn.Conv2d` the other day when I re
 
 
 <div align="center">
-<img src="./circular_padding/assets/glider_win.gif">
+<img src="/circular_padding/assets/glider_win.gif">
 <br>
 <em>Much better.</em>
 </div>
@@ -136,7 +136,7 @@ if __name__ == "__main__":
 And that's it! Enjoy tinkering with more interesting universes. 
 
 <div align="center">
-<img src="./circular_padding/assets/truncated_vs_toroid.gif">
+<img src="/circular_padding/assets/truncated_vs_toroid.gif">
 </div>
 
 
