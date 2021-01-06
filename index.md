@@ -1,2 +1,9 @@
-# Sorta Sota
-<div align="center"> State of <em>an</em> art. </div>
+---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
+
+layout: home
+---
+
+# SortaSota
+<em>State of an art</em>
