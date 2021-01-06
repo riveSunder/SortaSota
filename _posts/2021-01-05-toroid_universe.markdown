@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title: "Wrap Your Universe Around a Toroid with Circular Padding Convolutions"
 date: 2021-01-05 00:00:00 +0000
 categories: cellular automata
