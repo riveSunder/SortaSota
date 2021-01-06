@@ -23,8 +23,8 @@ gitlab_username: rivesunder
 
 # Build settings
 markdown: kramdown
-#theme: minima
-theme: jekyll-theme-dinky
+theme: minima
+#theme: jekyll-theme-dinky
 plugins:
   - jekyll-feed
 
