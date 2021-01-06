@@ -137,6 +137,8 @@ And that's it! Enjoy tinkering with more interesting universes.
 
 <div align="center">
 <img src="/SortaSota/circular_padding/assets/truncated_vs_toroid.gif">
+<br>
+<em>One of these things is not like the other, one of these things just doesn't belong. Actually, in a group of two both are dissimilar. Figuring which is a truncated grid and which uses circular padding is an exercise left to the reader (the starting seed is the same).</em>
 </div>
 
 
