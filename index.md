@@ -5,5 +5,4 @@
 layout: home
 ---
 
-# SortaSota
-<em>State of an art</em>
+<em>State of <em>an</em> art</em>

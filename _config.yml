@@ -13,19 +13,18 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: The Rive Sunder Blog
+title: SortaSota
 #email: your-email@example.com
-description: >- # this means to ignore newlines until "baseurl:"
-  The blog of Rive Sunder
-baseurl: ""
-url: "https://rivesunder.gitlab.io"
+baseurl: "https://rivesunder.github.io/SortaSota/"
+url: "https://rivesunder.github.io/SortaSota/"
 twitter_username: rivesunder
 #github_username:  rivesunder
 gitlab_username: rivesunder
 
 # Build settings
 markdown: kramdown
-theme: minima
+#theme: minima
+theme: jekyll-theme-dinky
 plugins:
   - jekyll-feed
 
