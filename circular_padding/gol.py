@@ -49,37 +49,39 @@ if __name__ == "__main__":
     flat = get_moore_machine()
     toroid = get_moore_machine(circular=True)
 
-    #my_starting_grid = torch.randn(64,64) > 0.0
+    random_grid = torch.randn(64,64) > 0.0
 
-    my_starting_grid = torch.zeros(64,64)
+    glider_grid = torch.zeros(64,64)
 
-    my_starting_grid[32, 32:35] = 1.0
-    my_starting_grid[33, 34] = 1.0
-    my_starting_grid[34, 33] = 1.0
+    glider_grid[32, 32:35] = 1.0
+    glider_grid[33, 34] = 1.0
+    glider_grid[34, 33] = 1.0
 
-    my_grid = my_starting_grid.clone().unsqueeze(0).unsqueeze(0)
+    for my_starting_grid, my_name in zip([random_grid, glider_grid],\
+            ["random", "glider"]):
 
-    import pdb; pdb.set_trace()
-
-    for step in range(300):
-
-        my_grid = gol_step(my_grid, flat)
-
-        fig = plt.figure()
-        plt.imshow(my_grid[0,0,:,:])
-        plt.savefig("./frames/flat_gol_{}.png".format(step))
-        plt.close(fig)
+        my_grid = my_starting_grid.clone().unsqueeze(0).unsqueeze(0)
 
 
-    my_grid = my_starting_grid.clone().unsqueeze(0).unsqueeze(0)
+        for step in range(300):
 
-    for step in range(300):
+            my_grid = gol_step(my_grid, flat)
 
-        my_grid = gol_step(my_grid, toroid)
+            fig = plt.figure()
+            plt.imshow(my_grid[0,0,:,:])
+            plt.savefig("./frames/flat_gol_{}{}.png".format(my_name, step))
+            plt.close(fig)
 
-        fig = plt.figure()
-        plt.imshow(my_grid[0,0,:,:])
-        plt.savefig("./frames/toroid_gol_{}.png".format(step))
-        plt.close(fig)
+
+        my_grid = my_starting_grid.clone().unsqueeze(0).unsqueeze(0)
+
+        for step in range(300):
+
+            my_grid = gol_step(my_grid, toroid)
+
+            fig = plt.figure()
+            plt.imshow(my_grid[0,0,:,:])
+            plt.savefig("./frames/toroid_gol_{}{}.png".format(my_name, step))
+            plt.close(fig)
 
     print("all done")
