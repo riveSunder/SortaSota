@@ -1,1 +1,6 @@
+title: SortaSota
+url: https://rivesunder.github.io/SortaSota
 theme: jekyll-theme-dinky
+markdown: kramdown
+plugins: 
+    - jekyll-feed
