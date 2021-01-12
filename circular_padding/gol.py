@@ -35,8 +35,18 @@ def gol_step(my_grid, neighborhood_conv, steps=1, device="cpu"):
 
         new_grid = torch.zeros_like(previous_grid)
 
-        new_grid[temp == 3] = 1
-        new_grid[previous_grid*temp == 2] = 1
+        birth = [3]
+        survive = [2,3]
+
+        for b in birth:
+            new_grid[temp == b] = 1
+
+        for s in survive:
+            new_grid[previous_grid*temp == s] = 1
+
+
+        #new_grid[temp == 3] = 1
+        #new_grid[previous_grid*temp == 2] = 1
 
         previous_grid = new_grid.clone()
 
