@@ -401,3 +401,297 @@ Random seed: 42 training step 24999
 min/max/mean magnitude and number of zeros:   0.000e+00/2.833e+00/5.708e-02 and 4341.0
   training loss: 4.690e-01    training accuracy: 0.997
   validation loss: 4.726e-01    validation accuracy: 0.868
+exp2 with dim_h=16
+
+ Regularization mode noreg with coefficient 0.05, dropout = 0 
+Random seed: 13 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/2.870e+00/1.009e-01 and 1337.0
+  training loss: 4.281e-01    training accuracy: 1.000
+  validation loss: 5.112e-01    validation accuracy: 0.866
+exp2 with dim_h=16
+
+ Regularization mode noreg with coefficient 0.05, dropout = 0 
+Random seed: 1337 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/2.601e+00/1.070e-01 and 1341.0
+  training loss: 4.283e-01    training accuracy: 1.000
+  validation loss: 4.733e-01    validation accuracy: 0.907
+exp2 with dim_h=16
+
+ Regularization mode noreg with coefficient 0.05, dropout = 0 
+Random seed: 42 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.306e+00/1.106e-01 and 1363.0
+  training loss: 4.286e-01    training accuracy: 1.000
+  validation loss: 5.110e-01    validation accuracy: 0.868
+exp2 with dim_h=16
+
+ Regularization mode L0 with coefficient 0.05, dropout = 0 
+Random seed: 13 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/2.870e+00/1.009e-01 and 1337.0
+  training loss: 4.281e-01    training accuracy: 1.000
+  validation loss: 5.112e-01    validation accuracy: 0.866
+exp2 with dim_h=16
+
+ Regularization mode L0 with coefficient 0.05, dropout = 0 
+Random seed: 1337 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/2.601e+00/1.070e-01 and 1341.0
+  training loss: 4.283e-01    training accuracy: 1.000
+  validation loss: 4.733e-01    validation accuracy: 0.907
+exp2 with dim_h=16
+
+ Regularization mode L0 with coefficient 0.05, dropout = 0 
+Random seed: 42 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.306e+00/1.106e-01 and 1363.0
+  training loss: 4.286e-01    training accuracy: 1.000
+  validation loss: 5.110e-01    validation accuracy: 0.868
+exp2 with dim_h=16
+
+ Regularization mode L1 with coefficient 0.05, dropout = 0 
+Random seed: 13 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.906e+00/9.640e-02 and 1627.0
+  training loss: 4.385e-01    training accuracy: 0.986
+  validation loss: 4.725e-01    validation accuracy: 0.902
+exp2 with dim_h=16
+
+ Regularization mode L1 with coefficient 0.05, dropout = 0 
+Random seed: 1337 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.173e+00/9.440e-02 and 1830.0
+  training loss: 4.300e-01    training accuracy: 0.999
+  validation loss: 4.801e-01    validation accuracy: 0.894
+exp2 with dim_h=16
+
+ Regularization mode L1 with coefficient 0.05, dropout = 0 
+Random seed: 42 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.178e+00/8.160e-02 and 1872.0
+  training loss: 4.287e-01    training accuracy: 1.000
+  validation loss: 4.880e-01    validation accuracy: 0.891
+exp2 with dim_h=16
+
+ Regularization mode L2 with coefficient 0.05, dropout = 0 
+Random seed: 13 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/2.195e+00/8.862e-02 and 1348.0
+  training loss: 4.286e-01    training accuracy: 1.000
+  validation loss: 4.889e-01    validation accuracy: 0.866
+exp2 with dim_h=16
+
+ Regularization mode L2 with coefficient 0.05, dropout = 0 
+Random seed: 1337 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/2.129e+00/8.799e-02 and 1360.0
+  training loss: 4.293e-01    training accuracy: 0.999
+  validation loss: 4.824e-01    validation accuracy: 0.879
+exp2 with dim_h=16
+
+ Regularization mode L2 with coefficient 0.05, dropout = 0 
+Random seed: 42 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/2.540e+00/9.061e-02 and 1357.0
+  training loss: 4.288e-01    training accuracy: 1.000
+  validation loss: 4.887e-01    validation accuracy: 0.870
+exp2 with dim_h=16
+
+ Regularization mode L3 with coefficient 0.05, dropout = 0 
+Random seed: 13 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/1.507e+00/9.094e-02 and 1341.0
+  training loss: 4.285e-01    training accuracy: 1.000
+  validation loss: 4.944e-01    validation accuracy: 0.861
+exp2 with dim_h=16
+
+ Regularization mode L3 with coefficient 0.05, dropout = 0 
+Random seed: 1337 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/1.504e+00/8.976e-02 and 1351.0
+  training loss: 4.288e-01    training accuracy: 1.000
+  validation loss: 4.703e-01    validation accuracy: 0.905
+exp2 with dim_h=16
+
+ Regularization mode L3 with coefficient 0.05, dropout = 0 
+Random seed: 42 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/1.495e+00/9.276e-02 and 1357.0
+  training loss: 4.293e-01    training accuracy: 0.999
+  validation loss: 4.814e-01    validation accuracy: 0.861
+exp2 with dim_h=16
+
+ Regularization mode L4 with coefficient 0.05, dropout = 0 
+Random seed: 13 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/4.961e-01/9.693e-02 and 1337.0
+  training loss: 4.321e-01    training accuracy: 1.000
+  validation loss: 4.550e-01    validation accuracy: 0.874
+exp2 with dim_h=16
+
+ Regularization mode L4 with coefficient 0.05, dropout = 0 
+Random seed: 1337 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/5.293e-01/9.896e-02 and 1336.0
+  training loss: 4.339e-01    training accuracy: 0.997
+  validation loss: 4.574e-01    validation accuracy: 0.896
+exp2 with dim_h=16
+
+ Regularization mode L4 with coefficient 0.05, dropout = 0 
+Random seed: 42 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/5.036e-01/9.659e-02 and 1371.0
+  training loss: 4.330e-01    training accuracy: 0.999
+  validation loss: 4.706e-01    validation accuracy: 0.859
+exp2 with dim_h=16
+
+ Regularization mode dropout with coefficient 0.05, dropout = 0.33 
+Random seed: 13 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/2.382e+00/8.807e-02 and 1377.0
+  training loss: 5.278e-01    training accuracy: 0.624
+  validation loss: 5.159e-01    validation accuracy: 0.519
+exp2 with dim_h=16
+
+ Regularization mode dropout with coefficient 0.05, dropout = 0.33 
+Random seed: 1337 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/2.143e+00/6.283e-02 and 1408.0
+  training loss: 6.035e-01    training accuracy: 0.199
+  validation loss: 5.823e-01    validation accuracy: 0.189
+exp2 with dim_h=16
+
+ Regularization mode dropout with coefficient 0.05, dropout = 0.33 
+Random seed: 42 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.126e+00/7.179e-02 and 1364.0
+  training loss: 5.642e-01    training accuracy: 0.380
+  validation loss: 5.481e-01    validation accuracy: 0.393
+exp3 with dim_h=256
+
+ Regularization mode noreg with coefficient 0.05, dropout = 0 
+Random seed: 13 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/4.209e+00/6.454e-03 and 228115.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 5.083e-01    validation accuracy: 0.909
+exp3 with dim_h=256
+
+ Regularization mode noreg with coefficient 0.05, dropout = 0 
+Random seed: 1337 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.813e+00/6.458e-03 and 227946.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 4.814e-01    validation accuracy: 0.948
+exp3 with dim_h=256
+
+ Regularization mode noreg with coefficient 0.05, dropout = 0 
+Random seed: 42 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.033e+00/6.973e-03 and 224829.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 5.153e-01    validation accuracy: 0.941
+exp3 with dim_h=256
+
+ Regularization mode L0 with coefficient 0.05, dropout = 0 
+Random seed: 13 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/4.209e+00/6.454e-03 and 228115.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 5.083e-01    validation accuracy: 0.909
+exp3 with dim_h=256
+
+ Regularization mode L0 with coefficient 0.05, dropout = 0 
+Random seed: 1337 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.813e+00/6.458e-03 and 227946.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 4.814e-01    validation accuracy: 0.948
+exp3 with dim_h=256
+
+ Regularization mode L0 with coefficient 0.05, dropout = 0 
+Random seed: 42 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.033e+00/6.973e-03 and 224829.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 5.153e-01    validation accuracy: 0.941
+exp3 with dim_h=256
+
+ Regularization mode L1 with coefficient 0.05, dropout = 0 
+Random seed: 13 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/4.209e+00/5.970e-03 and 246463.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 4.926e-01    validation accuracy: 0.926
+exp3 with dim_h=256
+
+ Regularization mode L1 with coefficient 0.05, dropout = 0 
+Random seed: 1337 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.817e+00/5.761e-03 and 247597.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 4.767e-01    validation accuracy: 0.946
+exp3 with dim_h=256
+
+ Regularization mode L1 with coefficient 0.05, dropout = 0 
+Random seed: 42 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.032e+00/5.772e-03 and 247504.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 4.831e-01    validation accuracy: 0.939
+exp3 with dim_h=256
+
+ Regularization mode L2 with coefficient 0.05, dropout = 0 
+Random seed: 13 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/4.204e+00/6.447e-03 and 227827.0
+  training loss: 4.281e-01    training accuracy: 1.000
+  validation loss: 4.884e-01    validation accuracy: 0.941
+exp3 with dim_h=256
+
+ Regularization mode L2 with coefficient 0.05, dropout = 0 
+Random seed: 1337 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.804e+00/6.380e-03 and 228315.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 4.798e-01    validation accuracy: 0.955
+exp3 with dim_h=256
+
+ Regularization mode L2 with coefficient 0.05, dropout = 0 
+Random seed: 42 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.026e+00/6.228e-03 and 228727.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 4.731e-01    validation accuracy: 0.950
+exp3 with dim_h=256
+
+ Regularization mode L3 with coefficient 0.05, dropout = 0 
+Random seed: 13 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/4.160e+00/6.477e-03 and 227991.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 4.771e-01    validation accuracy: 0.944
+exp3 with dim_h=256
+
+ Regularization mode L3 with coefficient 0.05, dropout = 0 
+Random seed: 1337 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.775e+00/6.324e-03 and 227649.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 4.979e-01    validation accuracy: 0.928
+exp3 with dim_h=256
+
+ Regularization mode L3 with coefficient 0.05, dropout = 0 
+Random seed: 42 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.008e+00/6.353e-03 and 227358.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 4.905e-01    validation accuracy: 0.948
+exp3 with dim_h=256
+
+ Regularization mode L4 with coefficient 0.05, dropout = 0 
+Random seed: 13 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/1.100e+00/6.060e-03 and 226845.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 4.553e-01    validation accuracy: 0.950
+exp3 with dim_h=256
+
+ Regularization mode L4 with coefficient 0.05, dropout = 0 
+Random seed: 1337 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/1.082e+00/6.071e-03 and 226849.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 4.650e-01    validation accuracy: 0.933
+exp3 with dim_h=256
+
+ Regularization mode L4 with coefficient 0.05, dropout = 0 
+Random seed: 42 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/1.076e+00/6.106e-03 and 227314.0
+  training loss: 4.280e-01    training accuracy: 1.000
+  validation loss: 4.610e-01    validation accuracy: 0.952
+exp3 with dim_h=256
+
+ Regularization mode dropout with coefficient 0.05, dropout = 0.33 
+Random seed: 13 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/4.213e+00/7.633e-03 and 227213.0
+  training loss: 4.383e-01    training accuracy: 1.000
+  validation loss: 4.246e-01    validation accuracy: 0.970
+exp3 with dim_h=256
+
+ Regularization mode dropout with coefficient 0.05, dropout = 0.33 
+Random seed: 1337 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.835e+00/7.491e-03 and 226406.0
+  training loss: 4.366e-01    training accuracy: 1.000
+  validation loss: 4.231e-01    validation accuracy: 0.968
+exp3 with dim_h=256
+
+ Regularization mode dropout with coefficient 0.05, dropout = 0.33 
+Random seed: 42 training step 24999
+min/max/mean magnitude and number of zeros:   0.000e+00/3.036e+00/7.493e-03 and 226268.0
+  training loss: 4.381e-01    training accuracy: 1.000
+  validation loss: 4.244e-01    validation accuracy: 0.972
