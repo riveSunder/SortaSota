@@ -53,7 +53,8 @@ Regularizing with higher order norms is markedly different, and this is readily 
 <br>
 </div>
 
-Compared to the sharp "V" of <em>L<sub>1</sub></em>, <em>L<sub>2</sub></em> and <em><sub>3</sub></em> demonstrate an increasingly flattened curve around 0.0. As you may intuit from the shape of the curve, this corresponds to low gradient values around x=0. Parameter gradients with respect to these regularization functions are straight lines with a slope equal to the order the norm. Instead of encouraging parameters to take a value of 0.0, norms of higher order will encourage small parameter values. The higher the order, the more emphasis the regularization function puts on penalizing large parameter values. In practice norms with order higher than 2 are very rarely used.
+Compared to the sharp "V" of <em>L<sub>1</sub></em>, <em>L<sub>2</sub></em> and <em>L<sub>3</sub></em> demonstrate an increasingly flattened curve around 0.0. As you may intuit from the shape of the curve, this corresponds to low gradient values around x=0. Parameter gradients with respect to these regularization functions are straight lines with a slope equal to the order of the norm. Instead of encouraging parameters to take a value of 0.0, norms of higher order will encourage small parameter values. The higher the order, the more emphasis the regularization function puts on penalizing large parameter values. In practice norms with order higher than 2 are very rarely used.
+
 
 <div align="center">
 <img src="/SortaSota/assets/regularization/norm3.png">
@@ -162,14 +163,15 @@ Experiment 2a, accuracy for `dim_h=32`
 <img src="/SortaSota/assets/regularization/exp2_progress_L0.png">
 <img src="/SortaSota/assets/regularization/exp2_progress_L1.png">
 <img src="/SortaSota/assets/regularization/exp2_progress_L2.png">
-<img src="/SortaSota/assets/regularization/exp2_progress_L3.png">
-<img src="/SortaSota/assets/regularization/exp2_progress_L_sup.png">
-<img src="/SortaSota/assets/regularization/exp2_progress_dropout.png">
+<!-- <img src="/SortaSota/assets/regularization/exp2_progress_L3.png">-->
+<!-- <img src="/SortaSota/assets/regularization/exp2_progress_L_sup.png">-->
+<!-- <img src="/SortaSota/assets/regularization/exp2_progress_dropout.png">-->
 <br>
+<em>Example training curves.</em>
 <br>
 </div>
 
-In the second experiment we managed to see a dramatic "swoosh" overfitting curve, but validation accuracy was worse across the board than the shallow MLP. There was some improvement in narrowing the training/validation gap for all regularization methods (except <em>L<sub>0</sub></em>, which nominally isn't even differentiable as a discontinuous function), and dropout was marginally better than <em>L<sub>n</sub></em> regularization. Training performance consistently achieved perfect accuracy or close to it, but that doesn't really matter if a model drops more than 10 percentage points in accuracy at deployment. 
+In the second experiment we managed to see dramatic "swoosh" overfitting curves, but validation accuracy was worse across the board than the shallow MLP. There was some improvement in narrowing the training/validation gap for all regularization methods (except <em>L<sub>0</sub></em>, which nominally isn't even differentiable as a discontinuous function), and dropout was marginally better than <em>L<sub>n</sub></em> regularization. Training performance consistently achieved perfect accuracy or close to it, but that doesn't really matter if a model drops more than 10 percentage points in accuracy at deployment. 
 
 Looking at parameter stats might give us a clue as to why validation performance was so bad, and why it didn't really respond to regularization as much as we would like. In the first experiment, <em>L<sub>1</sub></em> regularization pushed almost 10 times as many weights to a magnitude of approximately zero, while in experiment 2 the difference was much more subtle, with about 25 to 30% more weights falling below the 0.001 threshold than other regularization methods. 
 
@@ -256,7 +258,7 @@ Experiment 2b, weight statistics for deep MLP with `dim_h=256`
 <br><br>
 </p>
 
-Although <em>L<sub>1</sub></em> normalization still produces the most weights with a magnitude of approximately zero, it doesn't match the degree of zero enrichment as experiment 2a, let alone experiment 1. I suspect that this is partially due to my choice of 0.001 as the threshold value for "zero," and adjusting this lower by a few orders of magnitude would increase the difference in number of zeros for experiment 2 while decreasing the amount of zero enrichment in experiment 1. 
+Although <em>L<sub>1</sub></em> regularization still produces the most weights with a magnitude of approximately zero, it doesn't match the degree of zero enrichment as experiment 2a, let alone experiment 1. I suspect that this is partially due to my choice of 0.001 as the threshold value for "zero," and adjusting this lower by a few orders of magnitude would increase the difference in number of zeros for experiment 2 while decreasing the amount of zero enrichment in experiment 1. In any case my first guess that increasing the width of hidden layers would increase the relative enrichment of zeros is proven wrong.  
 
 I won't include plots of training progress for every regularization method in experiment 2b here as they all look pretty much the same (with the exception of the dismal training curve from the narrow variant MLP with dropout). There definitely is an interesting and consistent pattern in learning curves for the wide variant, though, and we'd definitely be remiss not to give it our attention. Look closely and see if you can spot what I'm talking about in the figures below. 
 
@@ -273,8 +275,8 @@ Did you see it? It's not as smooth as the photogenic plots used in OpenAI's [blo
 
 What started out as a simple experiment with mild ambitions turned into a more interesting line of inquiry in 3 parts. Our experimental results touched on fundamental deep learning theories like the lottery ticket hypothesis and deep double descent. 
 
-I initially intended to simply demonstrate that <em>L<sub>1</sub></em> regularization increases the number of parameters going to zero using a small toy dataset and tiny model. While we did observe that effect our results also speak to making good decisions about depth and width for neural network models. The result that dropout is usually more effective than regularization with parameter value penalties will come as no surprise to anyone uses dropout regularly, but the emphasis that bigger models can actually yield significantly better validation performance might be counter-intuitive, especially from a statistical learning perspective. Our results did nothing to contradict the wisdom that <em>L<sub>1</sub></em> regularization is probably a good fit when network sparsity is a goal, _e.g._ when preparing for pruning. 
+I initially intended to simply demonstrate that <em>L<sub>1</sub></em> regularization increases the number of parameters going to zero using a small toy dataset and tiny model. While we did observe that effect our results also speak to making good decisions about depth and width for neural network models. The result that dropout is usually more effective than regularization with parameter value penalties will come as no surprise to anyone who uses dropout regularly, but the emphasis that bigger models can actually yield significantly better validation performance might be counter-intuitive, especially from a statistical learning perspective. Our results did nothing to contradict the wisdom that <em>L<sub>1</sub></em> regularization is probably a good fit when network sparsity is a goal, _e.g._ when preparing for pruning. 
 
-It may be common, meme-able wisdom in deep learning that difficult models can be improved by making them deeper, but as we saw in experiment 2b, deep models are a liability if they are not wide enough. Although we didn't validate that width is important due to a sub-network search mechanism, our results certainly don't contradict the lottery ticket hypothesis. Finally, with the wide variant model in experiment 2b we saw a consistent pattern of performance improvement, followed by a loss of performance before finally improving to new performance heights. This might be useful to keep in mind when training a model that apparently sees performance collapse after initially showing good progress. It could be that increasing training time and/or model/dataset size just might push the model over the second threshold on the deep double descent curve. 
+It may be common, meme-able wisdom in deep learning that difficult models can be improved by making them deeper, but as we saw in experiment 2b, deep models are a liability if they are not wide enough. Although we didn't validate that width is important due to a sub-network search mechanism, our results certainly don't contradict the lottery ticket hypothesis. Finally, with the wide variant model in experiment 2b we saw a consistent pattern of performance improvement, followed by a loss of performance before finally improving to new heights of accuracy. This might be useful to keep in mind when training a model that apparently sees performance collapse after initially showing good progress. It could be that increasing training time and/or model/dataset size in a situation like that just might push the model over the second threshold on the deep double descent curve. 
 
 
