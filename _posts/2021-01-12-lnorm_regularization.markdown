@@ -50,7 +50,9 @@ Regularizing with higher order norms is markedly different, and this is readily 
 
 Compared to the sharp "V" of <em>L<sub>1</sub></em>, <em>L<sub>2</sub></em> and <em><sub>3</sub></em> demonstrate an increasingly flattened curve around 0.0. As you may intuit from the shape of the curve, this corresponds to low gradient values around x=0. Parameter gradients with respect to these regularization functions are straight lines with a slope equal to the order the norm. Instead of encouraging parameters to take a value of 0.0, norms of higher order will encourage small parameter values. The higher the order, the more emphasis the regularization function puts on penalizing large parameter values. In practice norms with order higher than 2 are very rarely used.
 
+<div align="center">
 <img src="/SortaSota/assets/regularization/norm3.png">
+</div>
 
 An interesting thing happens as we approach the <em>L<sub>∞</sub></em> norm, typically pronounced as "L sup" which is short for "supremum norm." The <em>L<sub>∞</sub></em> function returns the maximum absolute parameter value.
 
@@ -60,11 +62,15 @@ An interesting thing happens as we approach the <em>L<sub>∞</sub></em> norm, t
 </div>
 
 
+<div align="center">
 <img src="/SortaSota/assets/regularization/norm_sup.png">
+</div>
 
 We can visualize how higher order norms begin to converge toward <em>L<sub>∞</sub></em>:
 
+<div align="center">
 <img src="/SortaSota/assets/regularization/ln_norms.gif">
+</div>
 
 ## Experiment 1
 
@@ -72,11 +78,15 @@ In the previous section we looked at plots for various <em>L<sub>n</sub></em> no
 
 The first thing you might notice in this experiment is that for a shallow network like this, there's no dramatic "swoosh" pattern in the learning curves for training versus validation data.  
 
+<div align="center">
 <img src="/SortaSota/assets/regularization/progress_no_reg.png">
+</div>
 
 With no regularization there's only a small gap between training and validation performance at 0.970 +/- 0.001 and 0.950 +/- 0.003 accuracy for training and validation, respectively, for a difference of about 2 percentage points. All margins reported for these experiments will be standard deviation.
 
+<div align="center">
 <img src="/SortaSota/assets/regularization/progress_l0.png">
+</div>
 
 Unsurprisingly <em>L<sub>0</sub></em> regularization is not much different, coming in at 0.97 +/- 0.001 and 0.947 +/- 0.002 and an overfitting gap of about 2.3. 
 
@@ -90,12 +100,14 @@ Overfitting for the rest of the <em>L<sub>n</sub></em> regularization strategies
 | <em>L<sub>2</sub></em> | 0.961 +/- 0.002    | 0.934 +/- 0.002     | 0.027 +/- 0.005 |
 | <em>L<sub>3</sub></em> | 0.972 +/- 0.002    | 0.951 +/- 0.001     | 0.022 +/- 0.002 |
 
+<div align="center">
 <img src="/SortaSota/assets/regularization/progress_l1.png">
 <br>
 <img src="/SortaSota/assets/regularization/progress_l2.png">
 <br>
 <img src="/SortaSota/assets/regularization/progress_l3.png">
 <br>
+</div>
 
 With a shallow network like this regularization doesn't have a huge impact on performance or overfitting. In fact, the gap between training and validation accuracy was lowest for the case with no regularization at all, barely. What about the effect on population of model parameters? 
 
@@ -133,6 +145,7 @@ Experiment 2a, accuracy for `dim_h=32`
 </p>
 
 
+<div align="center">
 <img src="/SortaSota/assets/regularization/exp2_progress_noreg.png">
 <img src="/SortaSota/assets/regularization/exp2_progress_L0.png">
 <img src="/SortaSota/assets/regularization/exp2_progress_L1.png">
@@ -140,6 +153,7 @@ Experiment 2a, accuracy for `dim_h=32`
 <img src="/SortaSota/assets/regularization/exp2_progress_L3.png">
 <img src="/SortaSota/assets/regularization/exp2_progress_L_sup.png">
 <img src="/SortaSota/assets/regularization/exp2_progress_dropout.png">
+</div>
 
 In the second experiment we managed to see a dramatic "swoosh" overfitting curve, but validation accuracy was worse across the board than the shallow MLP. There was some improvement in narrowing the training/validation gap for all regularization methods (except <em>L<sub>0</sub></em>, which nominally isn't even differentiable as a discontinuous function), and dropout was marginally better than <em>L<sub>n</sub></em> regularization. Training performance consistently achieved perfect accuracy or close to it, but that doesn't really matter if a model drops more than 10 percentage points in accuracy at deployment. 
 
