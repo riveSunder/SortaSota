@@ -16,20 +16,20 @@ Let's start by visualizing and defining norms <em>L<sub>0</sub>, L<sub>1</sub>, 
 In general, we can describe the <em>L<sub>n</sub></em> norm as 
 
 <div align="right">
-<img src="/assets/regularization/eqn_norms.png">
+<img src="/SortaSota/assets/regularization/eqn_norms.png">
 </div>
 
 
 Although we can't raise the sum in **Eq.** 1 by the <em>1/n</em> power when <em>n=0</em>, we can take the limit as <em>n</em> goes to ∞ to find that the <em>L<sub>0</sub></em> norm is 1.0 for all non-zero scalars. In other words, when taking the <em>L<sub>0</sub></em> norm of a vector we'll get the number of non-zero elements in the vector. The animation below visualizes this process.
 
 <div align="center">
-<img src="/assets/regularization/l0_limit.gif">
+<img src="/SortaSota/assets/regularization/l0_limit.gif">
 </div>
 
 As we begin to see for very small values of <em>n</em>, the contribution to the <em>L<sub>0</sub></em> norm for any non-zero value is 1 and 0 otherwise.
 
 <div align="center">
-<img src="/assets/regularization/l0.png">
+<img src="/SortaSota/assets/regularization/l0.png">
 </div>
 
 If we inspect the figure above we see that there's no slope to the <em>L<sub>0</sub></em> norm: it's  totally flat everywhere except 0.0, where there is a discontinuity. That's not very useful for machine learning with gradient descent, but you can use the <em>L<sub>0</sub></em> norm as a regularization term in algorithms that don't use gradients, such as evolutionary computation, or to compare tensors of parameters to one another. It's probably not very practical to use with floating point weights in the absence of pruning, but at lower precision or with an active mechanism for zeroing out low-valued weights you may actually incur some zero-valued parameters.  
@@ -37,7 +37,7 @@ If we inspect the figure above we see that there's no slope to the <em>L<sub>0</
 The <em>L<sub>1</sub></em> norm will probably look more familiar and useful. 
 
 <div align="center">
-<img src="/assets/regularization/norm1.png">
+<img src="/SortaSota/assets/regularization/norm1.png">
 </div>
 
 Visual inspection of the <em>L<sub>1</sub></em> plot reveals a line with a slope of -1.0 before crossing the y-axis and 1.0 afterward. This is actually a very useful observation! The gradient with respect to the <em>L<sub>1</sub></em> norm of any parameter with a non-zero value will be either 1.0 or -1.0, regardless of the magnitude of said parameter. This means that <em>L<sub>1</sub></em> regularization won't be satisfied until parameter values are 0.0, so any non-zero parameter values better be contributing meaningful functionality to minimizing the overall loss function. In addition to reducing overfitting, <em>L<sub>1</sub></em> regularization encourages sparsity, which can be a desirable characteristic for neural network models for, _e.g._ model compression purposes.
@@ -45,26 +45,26 @@ Visual inspection of the <em>L<sub>1</sub></em> plot reveals a line with a slope
 Regularizing with higher order norms is markedly different, and this is readily apparent in the plots for <em>L<sub>2</sub></em> and <em>L<sub>3</sub></em> norms. 
 
 <div align="center">
-<img src="/assets/regularization/norm2.png">
+<img src="/SortaSota/assets/regularization/norm2.png">
 </div>
 
 Compared to the sharp "V" of <em>L<sub>1</sub></em>, <em>L<sub>2</sub></em> and <em><sub>3</sub></em> demonstrate an increasingly flattened curve around 0.0. As you may intuit from the shape of the curve, this corresponds to low gradient values around x=0. Parameter gradients with respect to these regularization functions are straight lines with a slope equal to the order the norm. Instead of encouraging parameters to take a value of 0.0, norms of higher order will encourage small parameter values. The higher the order, the more emphasis the regularization function puts on penalizing large parameter values. In practice norms with order higher than 2 are very rarely used.
 
-<img src="/assets/regularization/norm3.png">
+<img src="/SortaSota/assets/regularization/norm3.png">
 
 An interesting thing happens as we approach the <em>L<sub>∞</sub></em> norm, typically pronounced as "L sup" which is short for "supremum norm." The <em>L<sub>∞</sub></em> function returns the maximum absolute parameter value.
 
 
 <div align="right">
-<img src="/assets/regularization/eqn_lsup.png">
+<img src="/SortaSota/assets/regularization/eqn_lsup.png">
 </div>
 
 
-<img src="/assets/regularization/norm_sup.png">
+<img src="/SortaSota/assets/regularization/norm_sup.png">
 
 We can visualize how higher order norms begin to converge toward <em>L<sub>∞</sub></em>:
 
-<img src="/assets/regularization/ln_norms.gif">
+<img src="/SortaSota/assets/regularization/ln_norms.gif">
 
 ## Experiment 1
 
@@ -72,11 +72,11 @@ In the previous section we looked at plots for various <em>L<sub>n</sub></em> no
 
 The first thing you might notice in this experiment is that for a shallow network like this, there's no dramatic "swoosh" pattern in the learning curves for training versus validation data.  
 
-<img src="/assets/regularization/progress_no_reg.png">
+<img src="/SortaSota/assets/regularization/progress_no_reg.png">
 
 With no regularization there's only a small gap between training and validation performance at 0.970 +/- 0.001 and 0.950 +/- 0.003 accuracy for training and validation, respectively, for a difference of about 2 percentage points. All margins reported for these experiments will be standard deviation.
 
-<img src="/assets/regularization/progress_l0.png">
+<img src="/SortaSota/assets/regularization/progress_l0.png">
 
 Unsurprisingly <em>L<sub>0</sub></em> regularization is not much different, coming in at 0.97 +/- 0.001 and 0.947 +/- 0.002 and an overfitting gap of about 2.3. 
 
@@ -90,11 +90,11 @@ Overfitting for the rest of the <em>L<sub>n</sub></em> regularization strategies
 | <em>L<sub>2</sub></em> | 0.961 +/- 0.002    | 0.934 +/- 0.002     | 0.027 +/- 0.005 |
 | <em>L<sub>3</sub></em> | 0.972 +/- 0.002    | 0.951 +/- 0.001     | 0.022 +/- 0.002 |
 
-<img src="/assets/regularization/progress_l1.png">
+<img src="/SortaSota/assets/regularization/progress_l1.png">
 <br>
-<img src="/assets/regularization/progress_l2.png">
+<img src="/SortaSota/assets/regularization/progress_l2.png">
 <br>
-<img src="/assets/regularization/progress_l3.png">
+<img src="/SortaSota/assets/regularization/progress_l3.png">
 <br>
 
 With a shallow network like this regularization doesn't have a huge impact on performance or overfitting. In fact, the gap between training and validation accuracy was lowest for the case with no regularization at all, barely. What about the effect on population of model parameters? 
@@ -133,13 +133,13 @@ Experiment 2a, accuracy for `dim_h=32`
 </p>
 
 
-<img src="/assets/regularization/exp2_progress_noreg.png">
-<img src="/assets/regularization/exp2_progress_L0.png">
-<img src="/assets/regularization/exp2_progress_L1.png">
-<img src="/assets/regularization/exp2_progress_L2.png">
-<img src="/assets/regularization/exp2_progress_L3.png">
-<img src="/assets/regularization/exp2_progress_L_sup.png">
-<img src="/assets/regularization/exp2_progress_dropout.png">
+<img src="/SortaSota/assets/regularization/exp2_progress_noreg.png">
+<img src="/SortaSota/assets/regularization/exp2_progress_L0.png">
+<img src="/SortaSota/assets/regularization/exp2_progress_L1.png">
+<img src="/SortaSota/assets/regularization/exp2_progress_L2.png">
+<img src="/SortaSota/assets/regularization/exp2_progress_L3.png">
+<img src="/SortaSota/assets/regularization/exp2_progress_L_sup.png">
+<img src="/SortaSota/assets/regularization/exp2_progress_dropout.png">
 
 In the second experiment we managed to see a dramatic "swoosh" overfitting curve, but validation accuracy was worse across the board than the shallow MLP. There was some improvement in narrowing the training/validation gap for all regularization methods (except <em>L<sub>0</sub></em>, which nominally isn't even differentiable as a discontinuous function), and dropout was marginally better than <em>L<sub>n</sub></em> regularization. Training performance consistently achieved perfect accuracy or close to it, but that doesn't really matter if a model drops more than 10 percentage points in accuracy at deployment. 
 
@@ -233,8 +233,8 @@ Although <em>L<sub>1</sub></em> normalization still produces the most weights wi
 I won't include plots of training progress for every regularization method in experiment 2b here as they all look pretty much the same (with the exception of the dismal training curve from the narrow variant MLP with dropout). There definitely is an interesting and consistent pattern in learning curves for the wide variant, though, and we'd definitely be remiss not to give it our attention. Look closely and see if you can spot what I'm talking about in the figures below. 
 
 <div align="center">
-<img src="/assets/regularization/exp3_progress_L1.png"><br>
-<img src="/assets/regularization/exp3_progress_dropout.png"><br>
+<img src="/SortaSota/assets/regularization/exp3_progress_L1.png"><br>
+<img src="/SortaSota/assets/regularization/exp3_progress_dropout.png"><br>
 </div>
 
 Did you see it? It's not as smooth as the photogenic plots used in OpenAI's [blog post](https://openai.com/blog/deep-double-descent/) and paper ([Nakkiran _et al._ 2019](https://arxiv.org/abs/1912.02292)), but these training curves definitely display a pattern reminiscent of deep double descent. Note that the headline figures in their work show model size (or width) on the x-axis, but deep double descent can be observed for increasing model size, data, or training time.  	
