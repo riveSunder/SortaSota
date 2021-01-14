@@ -9,7 +9,8 @@ import matplotlib.pyplot as plt
 def get_moore_machine(circular=False):
 
     # conv kernel for calculating a Moore neighborhood
-    moore_kernel = torch.tensor([[1,1,1], [1,0,1], [1,1,1]])
+    moore_kernel = torch.tensor([[1.,1.,1.], [1.,0.,1.], [1.,1.,1.]],\
+            requires_grad=False)
 
     if circular:
         my_mode = "circular"
@@ -18,10 +19,10 @@ def get_moore_machine(circular=False):
 
     model = nn.Conv2d(1, 1, 3, padding=1, padding_mode=my_mode, bias=False)
 
-    for param in model.named_parameters():
-        param[1][0].requres_grad = False
+    for param in model.parameters():
+        param = moore_kernel
+        param.requres_grad = False
 
-        param[1][0] = moore_kernel
 
     return model
 
