@@ -33,6 +33,15 @@ def get_sk_digits(my_seed=1337):
     
     return [[train_x, train_y], [val_x, val_y], [test_x, test_y]] 
 
+class ArcTan(nn.Module):
+
+    def __init__(self):
+        super(ArcTan,self).__init__()
+
+    def forward(self, x):
+
+        return torch.arctan(x)
+
 class TwoHeadedMLP(nn.Module):
 
     def __init__(self, act=nn.Tanh()):
@@ -117,7 +126,7 @@ if __name__ == "__main__":
 
     dataset = get_sk_digits()
 
-    model = TwoHeadedMLP()
+    model = TwoHeadedMLP(act = ArcTan())
 
     x = torch.rand(512,64)
     y_rand = torch.rand(512,10)
