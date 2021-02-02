@@ -58,7 +58,7 @@ class TwoHeadedMLP(nn.Module):
         self.h_dim = 32
         self.code_dim = 16
 
-        self.dropout_rate = 0.05
+        self.dropout_rate = 0.125
         self.initialize_model()
 
     def initialize_model(self):
@@ -120,40 +120,106 @@ class TwoHeadedMLP(nn.Module):
 
         return logits, reconstruction
 
-
+def get_accuracy(logits, y_tensor):
+        
+    accuracy = torch.sum(1.*torch.argmax(logits, dim=1) == y_tensor) / len(y_tensor)
+                    
+    return accuracy
 
 if __name__ == "__main__":
 
     dataset = get_sk_digits()
 
-    model = TwoHeadedMLP(act = ArcTan())
 
-    x = torch.rand(512,64)
-    y_rand = torch.rand(512,10)
+    [[train_x, train_y], [val_x, val_y], [test_x, test_y]] = get_sk_digits()
+    y_tensor = torch.argmax(torch.Tensor(train_y), dim=1)
+    val_y_tensor = torch.argmax(torch.Tensor(val_y), dim=1)
 
-    y_onehot = torch.zeros(512,10)
+    train_x = torch.Tensor(train_x)
+    val_x = torch.Tensor(val_x)
 
-    for number, index in enumerate(torch.argmax(y_rand,dim=1)):
-        y_onehot[number, index] = 1.0
-
-    y_tensor = torch.argmax(y_rand, dim=1)
-
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
     
     mse_loss = nn.MSELoss()
     nll_loss = nn.NLLLoss()
 
-    for step in range(100):
-        model.zero_grad()
+    max_epochs = 30000
+    display_every = 100
 
-        logits, reconstruction = model(x)
+    results = {}
 
-        loss = mse_loss(reconstruction, x) + nll_loss(logits, y_tensor)
-        loss.backward()
+    for my_seed in [13, 1337, 42]:
+        np.random.seed(my_seed)
+        torch.manual_seed(my_seed)
+
+        for act_name, act_fn in zip(["arctan", "tanh", "relu"], [ArcTan(), nn.Tanh(), nn.ReLU()]):
+            
+            for loss_name, loss_weight in zip(["mse_loss", "nll_loss"], [1.0, 0.0]):
+
+                results[act_name+loss_name + "_loss" + str(my_seed)] = []
+                results[act_name+loss_name + "_val_loss" + str(my_seed)] = []
+
+                results[act_name+loss_name + "_accuracy" + str(my_seed)] = []
+                results[act_name+loss_name + "_val_accuracy" + str(my_seed)] = []
+
+                model = TwoHeadedMLP(act = act_fn)
+                optimizer = torch.optim.Adam(model.parameters(), lr=3e-5)
+
+                for epoch in range(max_epochs):
+                    model.zero_grad()
+
+                    logits, reconstruction = model(train_x)
+
+                    loss = loss_weight * mse_loss(reconstruction, train_x) \
+                            + (1-loss_weight) * nll_loss(logits, y_tensor)
+                    loss.backward()
+                    optimizer.step()
 
 
 
-        print("loss at step {} = {:.3e}".format(step, loss))
+                    if epoch % display_every == 0:
+
+                        val_logits, val_reconstruction = model(val_x)
+                        val_loss = (loss_weight) * mse_loss(val_reconstruction, val_x) \
+                                + (1. - loss_weight) * nll_loss(val_logits, val_y_tensor)
+
+                        accuracy = get_accuracy(logits, y_tensor)
+                        val_accuracy = get_accuracy(val_logits, val_y_tensor)
+
+                        print("activation: ", act_name, ", ", loss_name, " loss")
+                        print("loss at step {} = {:.3e}".format(epoch, loss))
+                        print("validation loss at step {} = {:.3e}".format(epoch, val_loss))
+
+                        print("accuracy at step {} = {:.3e}".format(epoch, accuracy))
+                        print("validation accuracy at step {} = {:.3e}".format(epoch, val_accuracy))
+
+                        results[act_name+loss_name + "_loss" + str(my_seed)].append(loss)
+                        results[act_name+loss_name + "_val_loss" + str(my_seed)].append(val_loss)
+
+                        results[act_name+loss_name + "_accuracy" + str(my_seed)].append(accuracy)
+                        results[act_name+loss_name + "_val_accuracy" + str(my_seed)].append(val_accuracy)
 
 
 
+                val_logits, val_reconstruction = model(val_x)
+                val_loss = mse_loss(val_reconstruction, val_x) + nll_loss(val_logits, val_y_tensor)
+
+                accuracy = get_accuracy(logits, y_tensor)
+                val_accuracy = get_accuracy(val_logits, val_y_tensor)
+
+                print(act_name, " ", loss_name)
+                print("final results with {} activation".format(act_name))
+                print("loss at step {} = {:.3e}".format(epoch, loss))
+                print("validation loss at step {} = {:.3e}".format(epoch, val_loss))
+
+                print("accuracy at step {} = {:.3e}".format(epoch, accuracy))
+                print("validation accuracy at step {} = {:.3e}".format(epoch, val_accuracy))
+
+                results[act_name+loss_name + "_loss" + str(my_seed)].append(loss)
+                results[act_name+loss_name + "_val_loss" + str(my_seed)].append(val_loss)
+
+                results[act_name+loss_name + "_accuracy" + str(my_seed)].append(accuracy)
+                results[act_name+loss_name + "_val_accuracy" + str(my_seed)].append(val_accuracy)
+
+    import pdb; pdb.set_trace()
+
+    np.save("./temp_results_2.npy", results, allow_pickle=True)
