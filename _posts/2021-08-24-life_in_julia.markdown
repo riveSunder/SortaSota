@@ -10,7 +10,7 @@ date: 2021-08-24 00:00:00 +0000
 <img src="/SortaSota/assets/life_like/glider_animation.gif">
 </div>
 
-
+<br>
 I've been tinkering with the Julia programming language lately, with the aim of determining suitability for developmental machine learning and biologically inspired computing. Along those lines, in this post we'll consider the execution speed of the Julia language for simulating Life-like cellular automata (CA). If you're in a hurry, I'll let you know that I didn't see consistently faster execution times with Julia than with a cellular automata simulator written in PyTorch under a variety of conditions. In fact, Julia was consistently slower in a variety of configurations, ranging from 20% to about 20 times slower depending on parameters. On the other hand, I spent a fair amount of time working on the CA simulator and there are likely several low-hanging fruit for speeding things up in the Julia implementation. In the Python baseline I use PyTorch convolutions and take advantage of the significant development effort that's gone in to optimizing execution speed for deep learning, while in July I use the `FFTW.jl` library to perform convolutions via the convolution theorem of the Fourier transform. 
 
 Programmers used to working with Python will undoubtedly notice several pain points when using Julia. Julia uses just-in-time (JIT) compilation to build a lower-level assembly language version of Julia code. While this can generate substantial speedups compared to similar code executed in Python, the lag associated with JIT will be noticeable in a Python-esque development workflow. Other differences that are readily noticeable early on will be that ranges are inclusive on both ends, and indexing begins at 1 [:/]. But I'll reserve any judgement or a more formal discussion of the languages pros and cons until I'm more familiar with it. 
@@ -22,29 +22,32 @@ The Game of Life benchmark I am using in this write-up consists of 1 to 10000 st
 <div align="center">
 <img src="/SortaSota/assets/life_like/laptop_julia.png"> 
 <br>
-1000-step performance simulating Conway's Game of Life with Julia with `FFTW.set_num_threads(n)` set to 1, 2, or 4 threads. Test performed on a laptop with a 4-core Intel i5 processor. 
+<em>1000-step performance simulating Conway's Game of Life with Julia with `FFTW.set_num_threads(n)` set to 1, 2, or 4 threads. Test performed on a laptop with a 4-core Intel i5 processor.</em> 
 </div>
 
+<br>
 <div align="center">
 <img src="/SortaSota/assets/life_like/laptop_carle.png">
 <br>
-1000-step performance simulating Conway's Game of Life with CARLE. Test performed on the same laptop with a 4-core Intel i5 processor. 
+<em>1000-step performance simulating Conway's Game of Life with CARLE. Test performed on the same laptop with a 4-core Intel i5 processor. </em>
 </div>
 
+<br>
 I also tried running the benchmark on a more powerful desktop, while still only utilizaing the CPU. (CARLE is actually capable of more than 100,000 grid updates per second when taking advantage of both GPU acceleration and environment vectorization, but we're not ready to make that comparison just yet). Results on the desktop CPU (24-core AMD Threadripper 3960x) followed the same pattern as we saw on the laptop. 
 
 <div align="center">
 <img src="/SortaSota/assets/life_like/desktop_julia.png">
 <br>
-1000-step performance simulating Conway's Game of Life with Julia with `FFTW.set_num_threads(n)` set to 1, 8, or 16 threads. Test performed on a desktop with a 24-core AMD 3960x CPU.  
+<em>1000-step performance simulating Conway's Game of Life with Julia with `FFTW.set_num_threads(n)` set to 1, 8, or 16 threads. Test performed on a desktop with a 24-core AMD 3960x CPU. </em> 
 </div>
 
 <div align="center">
 <img src="/SortaSota/assets/life_like/desktop_carle.png">
 <br>
-1000-step performance simulating Conway's Game of Life with CARLE. Test performed on the same desktop with a 24-core AMD 3960x CPU.
+<em>1000-step performance simulating Conway's Game of Life with CARLE. Test performed on the same desktop with a 24-core AMD 3960x CPU.</em>
 </div>
 
+<br>
 And that's it. In this cellular automata simulation benchmark, PyTorch thoroughly bested the Julia implementation in all conditions. However, considering that the single-thread performance in Julia was most comparable to PyTorch (at least in the small 64x64 cell grid condition), there should be ample room for improvement. If the Julia implementation can be improved to better take advantage of multithreading I think it will surpass or at least be competitive with CARLE in some conditions. If you'd like to stick around to go through the Julia code, continue reading. 
 
 
@@ -60,6 +63,7 @@ mutable struct Universe
 end
 ```
 
+<br>
 The CA state is described by the rules for cell transitions from 0 -> 1 (born), and from 1 -> 1 (live). All other cells become or stay 0. `grid` is the array that contains the cell states at each time step. 
 
 In general, you can build a Life-like CA simulator with just two steps: 1) calculate the ([Moore](https://en.wikipedia.org/wiki/Moore_neighborhood)) neighborhood for each cell location and 2) update the cell states based on their current state and that of their neighbors. Calculating the Moore neighborhood is easily accomplished with a convolution operation, and for that I used the Fourier transform method. 
@@ -86,6 +90,7 @@ function ft_convolve(grid, kernel)
 end
 ``` 
 
+<br>
 The fftshifts you see in the function above are necessary to map the convolutions to a toroidal manifold. If you've ever play an old school video game like "Pac-Man" you probably have a sense of how this works: something disappearing of of one edge will re-enter the grid on the opposite edge. In PyTorch the same effect is accomplished by setting the padding `mode` to `circular`. `pad_to_2d` is a function that enlarges the convolution kernel to match the dimensions of the CA grid, so that the sizes of the Fourier-transformed grid and kernel match and point-wise multiplication can be performed. Multiplication in the Fourier domain is transforms to convolutions in the spatial domain, so after taking the inverse FFT the result is the grid convolved with the kernel.  
 
 ```
@@ -109,7 +114,9 @@ function pad_to_2d(kernel, dims)
 end
 ```
 
+<br>
 The next step is to apply cell updates according to the B/S rules applied to the state of each cell and its neighbor. I've left a few different methods of doing this as comments in the function below. In particular I thought that using the `reduce` trick would offer a speed advantage, as it led to a 2 to 3 times speed-up when I used it in CARLE. That wasn't the case in Julia, however, and the uncommented looped logic you see before you was the fastest this time. 
+
 
 ```
 function ca_update(grid, rules)
@@ -142,6 +149,7 @@ function ca_update(grid, rules)
 end
 ```
 
+<br>
 Last and of little importance is a small convenience function for running multiple updates.
 
 ```
@@ -151,7 +159,7 @@ function ca_steps(universe::Universe, steps::Int64)
         universe.grid = ca_update(universe.grid, [universe.born, universe.live]) 
     end
 ```
-end
 
+<br>
 Those are the operations I used to build a CA simulator in Julia. If you'd like to look at the benchmark code and the raw results, check out the [notebooks](https://github.com/riveSunder/life_like/tree/master/notebooks). Thanks for your attention, and have a nice day in whatever universe you're currently inhabiting. 
 
