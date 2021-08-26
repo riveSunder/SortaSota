@@ -92,7 +92,8 @@ function ft_convolve(grid, kernel)
         padded_kernel = kernel
     end
     
-    abs.(FFTW.ifftshift(FFTW.ifft(FFTW.fft(FFTW.fftshift(grid)) .* FFTW.fft(padded_kernel) ) ))
+    abs.(FFTW.ifftshift(FFTW.ifft(FFTW.fft(FFTW.fftshift(grid)) 
+            .* FFTW.fft(padded_kernel) ) ))
 
     convolved = round.(FFTW.ifftshift(abs.(FFTW.ifft(
                     FFTW.fft(FFTW.fftshift(grid2)) .* 
