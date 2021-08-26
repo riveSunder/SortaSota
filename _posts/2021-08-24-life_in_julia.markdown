@@ -13,6 +13,19 @@ date: 2021-08-24 00:00:00 +0000
 <br>
 I've been tinkering with the Julia programming language lately, with the aim of determining suitability for developmental machine learning and biologically inspired computing. Along those lines, in this post we'll consider the execution speed of the Julia language for simulating Life-like cellular automata (CA). If you're in a hurry, I'll let you know that I didn't see consistently faster execution times with Julia than with a cellular automata simulator written in PyTorch under a variety of conditions. In fact, Julia was consistently slower in a variety of configurations, ranging from 20% to about 20 times slower depending on parameters. On the other hand, I spent a fair amount of time working on the CA simulator and there are likely several low-hanging fruit for speeding things up in the Julia implementation. In the Python baseline I use PyTorch convolutions and take advantage of the significant development effort that's gone in to optimizing execution speed for deep learning, while in July I use the `FFTW.jl` library to perform convolutions via the convolution theorem of the Fourier transform. 
 
+<div align="center">
+<img src="/SortaSota/assets/life_like/table_1.png"> 
+<br>
+<em>Table 1: steps/second on a 4-core 2.4 GHz i5 laptop CPU</em> 
+</div>
+
+<div align="center">
+<img src="/SortaSota/assets/life_like/table_2.png"> 
+<br>
+<em>Table 2: steps/second on a 24-core 3.8 GHz 3960x desktop CPU</em> 
+</div>
+
+<br>
 Programmers used to working with Python will undoubtedly notice several pain points when using Julia. Julia uses just-in-time (JIT) compilation to build a lower-level assembly language version of Julia code. While this can generate substantial speedups compared to similar code executed in Python, the lag associated with JIT will be noticeable in a Python-esque development workflow. Other differences that are readily noticeable early on will be that ranges are inclusive on both ends, and indexing begins at 1 [:/]. But I'll reserve any judgement or a more formal discussion of the languages pros and cons until I'm more familiar with it. 
 
 One thing also striking as a bit dated is the name of the language. Why do people so often call their technology by human names? Is it because deep down they want an anthropomorphized machine servant to do their bidding? Anyway, I'll be comparing an implementation of a totalistic cellular automata simulator written in Julia to another CA simulator project I've been working on, named Cellular Automata Reinforcement Learning Environment, or [CARLE](https:/github.com/rivesunder/carle).
