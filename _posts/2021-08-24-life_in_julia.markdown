@@ -7,7 +7,7 @@ date: 2021-08-24 00:00:00 +0000
 # Hello
 
 <div align="center">
-<img src="/SortaSota/assets/life_like/glider_animation.gif" width=50%>
+<img src="/SortaSota/assets/life_like/glider_animation.gif">
 </div>
 
 
@@ -20,13 +20,13 @@ One thing also striking as a bit dated is the name of the language. Why do peopl
 The Game of Life benchmark I am using in this write-up consists of 1 to 10000 steps of a glider in Conway's Game of Life with grid dimensions of 64, 128, or 256 cells wide and tall. In the first case I ran the simulation on a laptop CPU.  
 
 <div align="center">
-<img src="/SortaSota/assets/life_like/laptop_julia.png" width=65%>
+<img src="/SortaSota/assets/life_like/laptop_julia.png"> 
 <br>
 1000-step performance simulating Conway's Game of Life with Julia with `FFTW.set_num_threads(n)` set to 1, 2, or 4 threads. Test performed on a laptop with a 4-core Intel i5 processor. 
 </div>
 
 <div align="center">
-<img src="/SortaSota/assets/life_like/laptop_carle.png" width=65%>
+<img src="/SortaSota/assets/life_like/laptop_carle.png">
 <br>
 1000-step performance simulating Conway's Game of Life with CARLE. Test performed on the same laptop with a 4-core Intel i5 processor. 
 </div>
@@ -34,13 +34,13 @@ The Game of Life benchmark I am using in this write-up consists of 1 to 10000 st
 I also tried running the benchmark on a more powerful desktop, while still only utilizaing the CPU. (CARLE is actually capable of more than 100,000 grid updates per second when taking advantage of both GPU acceleration and environment vectorization, but we're not ready to make that comparison just yet). Results on the desktop CPU (24-core AMD Threadripper 3960x) followed the same pattern as we saw on the laptop. 
 
 <div align="center">
-<img src="/SortaSota/assets/life_like/desktop_julia.png" width=65%>
+<img src="/SortaSota/assets/life_like/desktop_julia.png">
 <br>
 1000-step performance simulating Conway's Game of Life with Julia with `FFTW.set_num_threads(n)` set to 1, 8, or 16 threads. Test performed on a desktop with a 24-core AMD 3960x CPU.  
 </div>
 
 <div align="center">
-<img src="/SortaSota/assets/life_like/desktop_carle.png" width=65%>
+<img src="/SortaSota/assets/life_like/desktop_carle.png">
 <br>
 1000-step performance simulating Conway's Game of Life with CARLE. Test performed on the same desktop with a 24-core AMD 3960x CPU.
 </div>
