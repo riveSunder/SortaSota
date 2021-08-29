@@ -1,6 +1,6 @@
 ---
 type: post
-title: Conway's Game of Life Simulation Speed in NumPy vs. Julia
+title: Simulation Speeds for Conway's Game of Life in NumPy vs. Julia
 date: 2021-08-29 00:00:00 +0000
 ---
 
