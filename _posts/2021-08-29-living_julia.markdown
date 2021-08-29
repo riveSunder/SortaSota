@@ -25,13 +25,13 @@ An interesting pattern emerges when comparing the scaling characteristics of the
 </div>
 
 <div align="center">
-<img src="/SortaSota/assets/life_like/carle_speed.png"> 
+<img src="/SortaSota/assets/life_like/numpy_speed.png"> 
 <br>
 <em>CA steps per second for grid side-lengths of 1024, 256, 128, and 64 using a NumPy implementation. This figure shows execution speeds on a 4-core laptop CPU.</em> 
 </div>
 
 <div align="center">
-<img src="/SortaSota/assets/life_like/carle_speed.png"> 
+<img src="/SortaSota/assets/life_like/julia_speed.png"> 
 <br>
 <em>CA steps per second for grid side-lengths of 1024, 256, 128, and 64 using an implementation in Julia. This figure shows execution speeds on a 4-core laptop CPU.</em> 
 </div>
