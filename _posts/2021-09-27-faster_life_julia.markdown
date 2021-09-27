@@ -1,9 +1,9 @@
 ---
 type: post
-title: "Faster Convolutions and Cellular Automata in Julia with NNlib: 2.7X Faster than PyTorch\*"
+title: "Faster Convolutions and Cellular Automata in Julia with NNlib: 2.7X Faster than PyTorch"
 date: 2021-09-27 00:00:00 +0000 
 ---
-
+* 
 
 <div align="center">
 <img src="/SortaSota/assets/life_like/toroid_nnlib.gif"> 
