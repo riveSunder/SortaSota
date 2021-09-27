@@ -1,6 +1,6 @@
 ---
 type: post
-title: "Faster Convolutions and Cellular Automata in Julia with NNlib: 2.7X Faster than PyTorch"
+title: "Faster Convolutions and Cellular Automata in Julia with NNlib: 2.7X Faster than PyTorch\*"
 date: 2021-09-27 00:00:00 +0000 
 ---
 
@@ -136,7 +136,7 @@ Table of execution speeds on a 24-core AMD Threadripper 3960x desktop CPU
 <br>
 <br>
 
-As stated in the title, Julia with NNlib.conv is nearly 3 times faster than the PyTorch implementation, CARLE. CARLE still excels for larger grid sizes, and for 1024 by 1024 cells CARLE is more than 5 times faster than Julia, and about 50% faster with a grid size of 256 by 256. While we made substantial improvements in Life-like CA simulation speeds in Julia by switching from a Fourier transform convolution to `NNlib.conv`, there are still two obvious speedups available. Although not reflected in the performance metrics above, CARLE gets a substantial boost in execution speed by vectorization (computing multiple CA universes in parallel) and hardware acceleration on a GPU. Combined, vectorization and GPU acceleration yields over 100,000 steps per second in CARLE.
+\* As stated in the title, Julia with NNlib.conv is nearly 3 times faster than the PyTorch implementation, CARLE. CARLE still excels for larger grid sizes, and for 1024 by 1024 cells CARLE is more than 5 times faster than Julia, and about 50% faster with a grid size of 256 by 256. While we made substantial improvements in Life-like CA simulation speeds in Julia by switching from a Fourier transform convolution to `NNlib.conv`, there are still two obvious speedups available. Although not reflected in the performance metrics above, CARLE gets a substantial boost in execution speed by vectorization (computing multiple CA universes in parallel) and hardware acceleration on a GPU. Combined, vectorization and GPU acceleration yields over 100,000 steps per second in CARLE.
 
 <div align="center">
 <img src="/SortaSota/assets/life_like/gpu_updates.png"> 
