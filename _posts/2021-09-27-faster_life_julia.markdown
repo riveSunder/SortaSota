@@ -10,6 +10,8 @@ date: 2021-09-27 00:00:00 +0000
 <br>
 <em>With circular convolutions you can end up back where you started.</em>
 </div>
+<br>
+<br>
 
 # Hello There
 
@@ -115,6 +117,8 @@ With the padding and convolution functions replaced, the rest of the code remain
 <div align="center">
 Table of execution speeds on a 4-core Intel i5-6300U laptop CPU 
 </div>
+<br>
+<br>
 
 #### Desktop CPU
 
@@ -128,6 +132,9 @@ Table of execution speeds on a 4-core Intel i5-6300U laptop CPU
 <div align="center">
 Table of execution speeds on a 24-core AMD Threadripper 3960x desktop CPU 
 </div>
+<br>
+<br>
+<br>
 
 As stated in the title, Julia with NNlib.conv is nearly 3 times faster than the PyTorch implementation, CARLE. CARLE still excels for larger grid sizes, and for 1024 by 1024 cells CARLE is more than 5 times faster than Julia, and about 50% faster with a grid size of 256 by 256. While we made substantial improvements in Life-like CA simulation speeds in Julia by switching from a Fourier transform convolution to `NNlib.conv`, there are still two obvious speedups available. Although not reflected in the performance metrics above, CARLE gets a substantial boost in execution speed by vectorization (computing multiple CA universes in parallel) and hardware acceleration on a GPU. Combined, vectorization and GPU acceleration yields over 100,000 steps per second in CARLE.
 
@@ -136,7 +143,9 @@ As stated in the title, Julia with NNlib.conv is nearly 3 times faster than the 
 <br>
 <em>GPU acceleration and vectorization combine to yield more than 100,000 steps per second in CARLE, the celluar automata simulator written with PyTorch.</em> 
 </div>
+<br>
+<br>
 
-The next lowest-hanging fruit for the cellular automata simulator I described in this post is vectorization. Much like other neural libraries like PyTorch or JAX, NNlib treats adds batch size and channels to 2D matrices. This means we can fairly simply take advantage of the samples dimension to vectorize our convolution operation so that many CA updates can run in parallel. After that the most fruitful speedups will probably be found by investigating [GPU support for NNlib](https://github.com/FluxML/NNlibCUDA.jl).
+The next lowest-hanging fruit for the cellular automata simulator I described in this post is vectorization. Much like other neural libraries like PyTorch or JAX, NNlib treats adds batch size and channels to 2D matrices. This means we can fairly simply take advantage of the samples dimension to vectorize our convolution operation so that many CA updates can run in parallel. After that the most fruitful speedups will probably be found by investigating [GPU support for NNlib](https://github.com/FluxML/NNlibCUDA.jl). You can take a look at all the code discussed above at [https://github.com/rivesunder/life_like](https://github.com/rivesunder/life_like).
 
 That's all for now, thanks for reading. Hope to have you along for the next CA speedup.  
