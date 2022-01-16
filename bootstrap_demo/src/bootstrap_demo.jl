@@ -278,3 +278,54 @@ function ensemble_prediction(x::Array{Float64,2}, models::Array{Any,1})
     return mean_pred[:,1], standard_deviation[:,1]
     
 end
+
+function train_run()
+    
+    x, y = my_sinc2(4096, [-.250, .250])
+
+    models = train_bootstrap(x, y, get_mlp, 13)
+
+    val_x, val_y = my_sinc2(128, [-.5, .5])
+
+    val_pred = forward_mlp(val_x, models[1])
+
+    PyPlot.figure()
+    PyPlot.plot(val_x[:,1], val_y[:,1], "o")
+
+    PyPlot.plot(val_x[:,1], val_pred[:,1], "x")
+    PyPlot.title("one model")
+    PyPlot.show()
+
+    val_pred, val_std = ensemble_prediction(val_x, models)
+    train_pred, train_std = ensemble_prediction(x, models)
+
+    sort_indices = sortperm(val_x[:,1])
+
+    val_x = val_x[sort_indices]
+    val_y = val_y[sort_indices]
+    val_pred = val_pred[sort_indices]
+
+    val_std = val_std[sort_indices]
+
+    sort_indices = sortperm(x[:,1])
+    x = x[sort_indices]
+
+    y = y[sort_indices]
+    train_pred = train_pred[sort_indices]
+    train_std = train_std[sort_indices]
+
+    PyPlot.figure()
+    PyPlot.plot(val_x[:,1], val_y[:,1], "o")
+
+    PyPlot.plot(val_x[:,1], val_pred[:,1], "x")
+    PyPlot.fill_between(val_x[:,1], val_pred.-val_std, val_pred.+val_std, alpha=0.5)
+    PyPlot.show()
+
+    PyPlot.figure()
+    PyPlot.plot(x[:,1], y[:,1], "o")
+
+    PyPlot.plot(x[:,1], train_pred[:,1], "x")
+    PyPlot.fill_between(x[:,1], train_pred .- train_std, train_pred .+ train_std, alpha=0.5)
+    PyPlot.show()
+    
+end
